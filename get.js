@@ -17,20 +17,22 @@ const sendData = (res) => {
 }
 
 const getData = () => {
-    return fetch('db.json')
+    fetch('db.json')
+        .then(result => {
+            if (result.ok === true) {
+                fetch('db.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        sendData(data);
+                    })
+                    .catch(error => {
+                        console.log('Ошибка: ' + error);
+                    })
+            }
+        })
         .catch(error => {
             console.log('Ошибка: ' + error);
     })
 }
 
-
-getData().then(result => {
-    if (result.ok === true) {
-            getData().then(response => response.json()).then(data => {
-            sendData(data)
-        })
-      
-    }
-}).catch(error => {
-    console.log('Ошибка: ' + error);
-})
+getData()
