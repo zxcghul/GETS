@@ -28,7 +28,9 @@ getData().then(result => {
     if (result.ok === true) {
             getData().then(response => response.json()).then(data => {
             sendData(data)
-        });
-        
+        })
+      
     }
+}).catch(error => {
+    console.log('Ошибка: ' + error);
 })
