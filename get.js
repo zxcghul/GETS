@@ -1,27 +1,11 @@
-let clone = {};
 
-const getData = () => {
-    return fetch('db.json')
-        .then(response => response.json())
-        .then((data) => {
-            for (let key in data) {
-                clone[key] = data[key];
-            }
-        })
-        .catch(error => {
-            console.log('Ошибка: ' + error);
-        })
-}
-
-const sendData = () => {
-    setTimeout(() => {
-        console.log(JSON.stringify(clone));
-    fetch('https://jsonplaceholder.typicode.com/posts', {
+const sendData = (res) => {
+        fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify(clone)
+        body: JSON.stringify(res)
     })
         .then(response => response.json())
         .then(data => {
@@ -30,8 +14,21 @@ const sendData = () => {
         .catch(error => {
             console.log('Ошибка: ' + error);
         })
-    }, 2000);
 }
 
-getData();
-sendData();
+const getData = () => {
+    return fetch('db.json')
+        .catch(error => {
+            console.log('Ошибка: ' + error);
+    })
+}
+
+
+getData().then(result => {
+    if (result.ok === true) {
+            getData().then(response => response.json()).then(data => {
+            sendData(data)
+        });
+        
+    }
+})
