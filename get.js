@@ -16,23 +16,15 @@ const sendData = (res) => {
         })
 }
 
-const getData = () => {
+const getData = (func) => {
     fetch('db.json')
-        .then(result => {
-            if (result.ok === true) {
-                fetch('db.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        sendData(data);
-                    })
-                    .catch(error => {
-                        console.log('Ошибка: ' + error);
-                    })
-            }
+        .then(response => response.json())
+        .then(data => {
+            func(data);
         })
         .catch(error => {
-            console.log('Ошибка: ' + error);
+        console.log('Ошибка: ' + error);
     })
 }
 
-getData()
+getData(sendData)
